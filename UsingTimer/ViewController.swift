@@ -32,18 +32,17 @@ class ViewController: UIViewController {
     }
 
     func createTimer() {
-        let timer = Timer.scheduledTimer(
-            timeInterval: 2,
-            target: self,
-            selector: #selector(fireTimer),
-            userInfo: nil,
-            repeats: true
-        )
-        timer.tolerance = 200
-    }
-    
-    @objc func fireTimer() {
-        view.backgroundColor = colors.randomElement()
+        var ran = 1
+        _ = Timer.scheduledTimer(
+            withTimeInterval: 1,
+            repeats: true) { [weak self] timer in
+            if ran >= 10 {
+                timer.invalidate()
+            }
+            DispatchQueue.main.async {
+                self?.view.backgroundColor = self?.colors.randomElement() ?? .clear
+                ran += 1
+            }
+        }
     }
 }
-
